@@ -1,0 +1,55 @@
+{
+    "name": "l2txt",
+    "version": "1.0.0",
+    "description": "linter for l2 scripts from C1 and C2 clients",
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./monaco": {
+            "types": "./dist/monaco.d.ts",
+            "default": "./dist/monaco.js"
+        },
+        "./vscode": {
+            "types": "./dist/vscode.d.ts",
+            "default": "./dist/vscode.js"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "keywords": [
+        "l2",
+        "l2txt",
+        "lineage2",
+        "lint",
+        "monaco",
+        "vscode",
+        "typescript",
+        "javascript"
+    ],
+    "author": "ritsuwastaken",
+    "license": "Unlicense",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ritsuwastaken/l2txt.git"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "test": "npm run build && node --test \"test/**/*.test.ts\"",
+        "prepack": "npm run build"
+    },
+    "devDependencies": {
+        "@types/node": "^22.20.5",
+        "@types/vscode": "^1.146.0",
+        "typescript": "7.0.2"
+    }
+}
