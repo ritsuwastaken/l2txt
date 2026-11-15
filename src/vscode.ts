@@ -18,22 +18,35 @@ export const toDiagnostics = (vscode: typeof VSCode, diagnostics: Diagnostic[]):
 export function watch(vscode: typeof VSCode, options: { client?: Client; delay?: number } = {}): VSCode.Disposable {
   const collection = vscode.languages.createDiagnosticCollection("l2txt");
   const timers = new Map<string, ReturnType<typeof setTimeout>>();
+  const cancel = (uri: VSCode.Uri) => {
+    clearTimeout(timers.get(uri.toString()));
+    timers.delete(uri.toString());
+  };
   const update = (document: VSCode.TextDocument) => {
+    if (document.uri.scheme !== "file")
+      return;
     const result = validate(document.getText(), document.fileName, options);
     if (result)
       collection.set(document.uri, toDiagnostics(vscode, result.diagnostics));
+    else
+      collection.delete(document.uri);
   };
   const later = (document: VSCode.TextDocument) => {
-    const key = document.uri.toString();
-    clearTimeout(timers.get(key));
-    timers.set(key, setTimeout(() => update(document), options.delay ?? 300));
+    cancel(document.uri);
+    timers.set(document.uri.toString(), setTimeout(() => {
+      timers.delete(document.uri.toString());
+      update(document);
+    }, options.delay ?? 300));
   };
   vscode.workspace.textDocuments.forEach(update);
   return vscode.Disposable.from(
     collection,
     vscode.workspace.onDidOpenTextDocument(update),
     vscode.workspace.onDidChangeTextDocument(({ document }) => later(document)),
-    vscode.workspace.onDidCloseTextDocument(({ uri }) => collection.delete(uri)),
+    vscode.workspace.onDidCloseTextDocument(({ uri }) => {
+      cancel(uri);
+      collection.delete(uri);
+    }),
     { dispose: () => timers.forEach(clearTimeout) },
   );
 }

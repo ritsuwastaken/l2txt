@@ -72,6 +72,6 @@ export const tables = {
     systemmsg: { begin: "msg_begin", end: "msg_end", fields: { id: "d", group: "s", color: "s", sound: "s", msg: "s" } },
     weapongrp: { begin: "item_begin", end: "item_end", fields: { object_id: "d", object_name: "s", body_part: "m", animation: "d", drop_type: "d", drop_anim_type: "d", drop_radius: "d", drop_height: "d", projectile: "s", curvature: "d", drop_mesh: "m", drop_texture: "m", icon: "m", mesh: "m", texture: "m", crystallizable: "d", item_sound: "m", drop_sound: "s", equip_sound: "s", weight: "d", soulshot_count: "d", spiritshot_count: "d", material_type: "s", crystal_type: "s", physical_damage: "d", random_damage: "d", weapon_type: "s", critical: "d", hit_modify: "d", avoid_modify: "d", shield_defense: "d", shield_defense_rate: "d", attack_speed: "d", mp_consume: "d", magical_damage: "d", durability: "d" } },
   },
-} satisfies Record<string, Record<string, Table>>;
+} as const satisfies Record<string, Record<string, Table>>;
 
 export type Client = keyof typeof tables;

@@ -1,9 +1,9 @@
-export type FieldType = "d" | "f" | "s" | "m" | "n";
+export type FieldType = "d" | "f" | "s" | "m";
 
 export interface Table {
-  begin: string;
-  end: string;
-  fields: Record<string, FieldType>;
+  readonly begin: string;
+  readonly end: string;
+  readonly fields: Readonly<Record<string, FieldType>>;
 }
 
 export interface Position {
