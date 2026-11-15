@@ -223,7 +223,7 @@ function problemsOf(text: string, { tokens, problems: found }: Tokens, table: Ta
           report(token, {
             code: "space-separator",
             severity: Severity.Information,
-            message: `Space instead of a tab before ${field.name}; tab-separated tools may misread it`,
+            message: `Space instead of a tab before ${field.name}`,
             field: field.name,
           });
       } else
